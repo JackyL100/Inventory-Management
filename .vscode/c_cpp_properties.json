@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/wxWidgets-3.2.3/include/wx",
+                "/usr/local/wxWidgets-3.2.3/macbuild/lib/wx/include/osx_cocoa-unicode-3.2",
+                "/usr/local/wxWidgets-3.2.3/include",
+                "/usr/local/sqlite-amalgamation-3440000"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-clang-arm64"
+        }
+    ],
+    "version": 4
+}
