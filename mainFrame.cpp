@@ -69,6 +69,12 @@ void MyFrame::Search(wxCommandEvent& event)
 
 void MyFrame::CreateNewItem(wxCommandEvent& event)
 {
-    NewItemDialog dlg;
-    
+    std::vector<wxString> itemInfo;
+    NewItemDialog dlg(itemInfo);
+    dlg.ShowModal();
+    std::cout << "Created Item with: ";
+    for (auto& data : itemInfo) {
+        std::cout << data << "|";
+    }
+    std::cout << "\n";
 }

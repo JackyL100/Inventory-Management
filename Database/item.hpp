@@ -1,5 +1,5 @@
 #include <string>
-
+#include <vector>
 class Item {
     private:
         float price;
@@ -8,4 +8,6 @@ class Item {
         int vendor;
         std::string description;
         std::string name;
+    public:
+        Item(std::vector<std::string> itemInfo);
 };
