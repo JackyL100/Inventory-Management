@@ -6,8 +6,8 @@ SearchPanel::SearchPanel(wxSplitterWindow* splitter) {
     searchbar = new wxSearchCtrl(searchSplitter, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
     searchResults = new wxListView(searchSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
-    for (int i = 0; i < Item::formFields.size(); i++) {
-        searchResults->AppendColumn(Item::formFields[i]);
+    for (int i = 0; i < Item::columns.size(); i++) {
+        searchResults->AppendColumn(Item::columns[i]);
     }
     
     searchResults->SetBackgroundColour(wxColor(100,200,200));
@@ -24,16 +24,20 @@ SearchPanel::SearchPanel(wxSplitterWindow* splitter) {
     numItems = 0;
 }
 
-void SearchPanel::CreateNewItem(wxCommandEvent& event) {
+std::vector<std::string> SearchPanel::CreateNewItem() {
+    std::cout << "Creating Item\n";
+    int id = Item::generateID();
     std::vector<wxString> itemInfo;
+    std::cout << "Showing Dialog\n";
     NewItemDialog dlg(itemInfo, Item::formFields, Item::formFilters);
     dlg.ShowModal();
     std::vector<std::string> itemData;
+    itemData.push_back(std::to_string(id));
     std::cout << "Created Item\n";
-    searchResults->InsertItem(numItems, itemInfo[0]);
-    for (int i = 1; i < itemInfo.size(); i++) {
-        searchResults->SetItem(numItems, i, itemInfo[i]);
-        itemData.push_back(itemInfo[i].ToStdString());
+    searchResults->InsertItem(numItems, wxString::Format(wxT("%i"), id));   
+    for (int i = 1; i < Item::columns.size(); i++) {
+        searchResults->SetItem(numItems, i, itemInfo[i - 1]);
+        itemData.push_back(itemInfo[i - 1].ToStdString());
     }
-    numItems++;
+    return itemData;
 }

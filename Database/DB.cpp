@@ -1,17 +1,18 @@
 #include "DB.hpp"
 
-template<typename object>
-DB<object>::DB(std::string db_path) {
+
+DB::DB(std::string db_path) {
     sqlite3_open(db_path.c_str(), &db);
     char* err;
     int rc = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS inventory(id INTEGER PRIMARY KEY, price REAL, num_stock INTEGER, vendor INTEGER, name TEXT, description TEXT)", NULL, NULL, &err);
     if (rc != SQLITE_OK) {
         std::cout << "error creating table\n";
     }
+
 }
 
-template<typename object>
-DB<object>::DB(std::string db_path, std::string db_name, const std::vector<std::string>& column_names, const std::vector<DB_TYPES>& types){
+
+DB::DB(std::string db_path, std::string db_name, const std::vector<std::string>& column_names, const std::vector<DB_TYPES>& types){
     assert(column_names.size() == types.size() && "size of column_names list different from size of types");
     sqlite3_open(db_path.c_str(), &db);
     char* err;
@@ -31,8 +32,12 @@ DB<object>::DB(std::string db_path, std::string db_name, const std::vector<std::
     }
 }
 
-template<typename object>
-std::string DB<object>::type_to_string(DB_TYPES type) {
+DB::~DB() {
+    sqlite3_close(db);
+}
+
+
+std::string DB::type_to_string(DB_TYPES type) {
     switch(type) {
         case DB_TYPES::INTEGER:
             return "INTEGER";
@@ -45,8 +50,7 @@ std::string DB<object>::type_to_string(DB_TYPES type) {
     }
 }
 
-template<typename object>
-void DB<object>::viewTable(std::string table) {
+void DB::viewTable(std::string table) {
     std::string query = "SELECT * FROM " + table + ";";
     sqlite3_prepare_v2(db, query.c_str(), -1, &currentPreparedStatement, NULL);
     while (sqlite3_step(currentPreparedStatement) != SQLITE_DONE) {
@@ -59,7 +63,24 @@ void DB<object>::viewTable(std::string table) {
     }
 }
 
-template<typename object>
-std::vector<object> DB<object>::queryDB(std::string query) {
-    
+void DB::InsertItem(const Item& item) {
+    std::vector<std::string> values = item.to_vec();
+    std::string query = assembler.AssembleInsert("inventory",Item::columns, values);
+    char* e;
+    std::cout << "Running query: " << query << "\n";
+    int err = sqlite3_exec(db, query.c_str(), NULL, 0, &e);
+    if (err != SQLITE_OK) {
+        std::cout << "Error Inserting because " << e << "\n";
+        sqlite3_free(e);
+    } else {
+        std::cout << "Successfully added Item\n";
+    }
+}
+
+void DB::DeleteItem(int id) {
+
+}
+
+void DB::UpdateItem(std::string table, int id, std::string update) {
+
 }

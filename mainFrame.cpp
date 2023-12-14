@@ -9,6 +9,8 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     frameSplitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_BORDER | wxSP_LIVE_UPDATE);
     searchPanel = new SearchPanel(frameSplitter);
     wxPanel* panel = new wxPanel(frameSplitter);
+    std::vector<DB_TYPES> types = {DB_TYPES::INTEGER, DB_TYPES::TEXT, DB_TYPES::REAL, DB_TYPES::INTEGER, DB_TYPES::TEXT, DB_TYPES::TEXT};
+    inventoryDatabase = std::make_unique<DB>("inventory.db", "inventory", Item::columns, types);
 
     menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
                      "Help string shown in status bar for this menu item");
@@ -22,7 +24,7 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     menuBar->Append( menuHelp, "&Help" );
     SetMenuBar( menuBar );
     menuFile->Bind(wxEVT_MENU, &MyFrame::OnAbout, this, ID_Hello);
-    menuFile->Bind(wxEVT_MENU, &SearchPanel::CreateNewItem, searchPanel, ID_NewItem);
+    menuFile->Bind(wxEVT_MENU, &MyFrame::CreateNewItem, this, ID_NewItem);
     CreateStatusBar();
     SetStatusText( "Welcome to wxWidgets!" );
 
@@ -52,4 +54,15 @@ void MyFrame::OnTextEntered(wxCommandEvent& event)
 void MyFrame::Search(wxCommandEvent& event) 
 {
     std::cout << event.GetString() << "\n";
+}
+
+void MyFrame::CreateNewItem(wxCommandEvent& event) {
+    std::vector<std::string> itemData = searchPanel->CreateNewItem();
+    for (auto& d : itemData) {
+        std::cout << d << " ";
+    }
+    std::cout << "\n";
+    Item item(itemData);
+    std::cout << "Serialized Item Data: " << item.serialize() << "\n";
+    inventoryDatabase->InsertItem(item);
 }

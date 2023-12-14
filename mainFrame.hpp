@@ -1,9 +1,11 @@
+#include <memory>
 #include <wx/wx.h>
 #include <wx/srchctrl.h>
 #include <wx/splitter.h>
 #include <wx/listctrl.h>
 #include "customWidgets/NewItemDialog.hpp"
 #include "customWidgets/SearchPanel.hpp"
+#include "Database/DB.hpp"
 
 class MyFrame: public wxFrame
 {
@@ -15,6 +17,7 @@ private:
     wxMenuBar *menuBar;
     wxSplitterWindow* frameSplitter;
     SearchPanel* searchPanel;
+    std::unique_ptr<DB> inventoryDatabase;
     void OnHello(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);

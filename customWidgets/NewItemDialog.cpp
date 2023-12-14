@@ -1,6 +1,5 @@
 #include "NewItemDialog.hpp"
 
-// move formFields and formFilters to item class
 // create function that creates each field so more flexible
 void NewItemDialog::createField(std::vector<std::string> fields, std::vector<wxTextValidatorStyle> filters) {
     

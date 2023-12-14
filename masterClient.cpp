@@ -1,4 +1,4 @@
-//g++ -std=c++17 main.cpp `/usr/local/wxWidgets-3.2.3/macbuild/wx-config --cxxflags --libs`
+//g++ -std=c++20 masterClient.cpp mainFrame.cpp Database/DB.cpp Database/item.cpp Database/StatementAssembler.cpp Database/sqlite3.o customWidgets/NewItemDialog.cpp customWidgets/SearchPanel.cpp `/usr/local/wxWidgets-3.2.3/macbuild/wx-config --cxxflags --libs`
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP

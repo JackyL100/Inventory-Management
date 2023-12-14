@@ -12,6 +12,6 @@ class SearchPanel {
         wxSplitterWindow* searchSplitter;
         wxSearchCtrl* searchbar;
         wxListView* searchResults;
-        SearchPanel(wxSplitterWindow* splitter);
-        void CreateNewItem(wxCommandEvent& event);
+        SearchPanel(wxSplitterWindow* splitter); // creates SearchPanel object with splitter as the parent
+        std::vector<std::string> CreateNewItem(); // creates NewItemDialog instance
 };
